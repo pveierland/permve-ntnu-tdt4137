@@ -36,6 +36,11 @@
 \usepackage{pgfplots}
 \usetikzlibrary{plotmarks}
 
+\usepackage{tabularx}  % for 'tabularx' environment and 'X' column type
+\usepackage{ragged2e}  % for '\RaggedRight' macro (allows hyphenation)
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X} 
+\usepackage{booktabs}  % for \toprule, \midrule, and \bottomrule macros 
+
 \usepackage{enumitem}
 \usepackage{lastpage}
 \usepackage{multirow}

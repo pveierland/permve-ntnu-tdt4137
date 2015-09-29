@@ -18,12 +18,6 @@
 \newacro{NGOMSL}{Natural GOMS Language}
 \newacro{GOMS}{Goals Operators Methods Selection rules}
 
-\newacro{ID}{Index of Difficulty}
-\newacro{LTM}{Long-Term Memory}
-\newacro{MHP}{Model Human Processor}
-\newacro{VIS}{Visual Image Store}
-\newacro{VR}{Virtual Reality}
-
 \begin{document}
 
 \maketitle
@@ -33,35 +27,150 @@
 \begin{enumerate}
 \item \textbf{Give examples of typical ``unit-tasks'' for the telephone app and model the top-level in \ac{NGOMSL}. Remember to include the unit-task level.}
 
-Typical unit-tasks for the telephone app 
+Typical unit-tasks for the telephone app includes:
+
+\begin{itemize}
+\item Creating a new contact
+\item Editing an existing contact
+\item Checking answering machine
+\item Calling a number
+\item Calling a contact
+\item Searching for a contact
+\end{itemize}
+
+\item \textbf{Model the goal ``call'', which calls a person.}
+
 \begin{tcblisting}{
     listing only,
     colback = LemonChiffon1
 }
-Method to accomplish goal of selecting an application tab
-Step 1: Locate icon representing target application tab
-Step 2: Accomplish task of clicking on icon
-Step 3: Return with goal completed
+Method to accomplish goal of calling a person
+Step 1: Recall name of person to call
+Step 2: Retrieve-LTM whether person is a favorite contact
+Step 3: Decide: If person is a favorite contact Then accomplish the goal of calling favorite contact Else accomplish the goal of calling a person by dialing
+Step 4: Return with goal accomplished
 \end{tcblisting}
 
+\begin{tcblisting}{
+    listing only,
+    colback = LemonChiffon1
+}
+Method to accomplish goal of calling person by dialing
+Step 1: Retain Dialer as button to press
+Step 2: Accomplish the goal of pressing a button
+Step 3: Accomplish the goal of dialing number
+Step 4: Retain call button as button to press
+Step 5: Accomplish the goal of pressing a button
+Step 6: Return with goal accomplished
+\end{tcblisting}
 
+\begin{tcblisting}{
+    listing only,
+    colback = LemonChiffon1
+}
+Method to accomplish goal of calling favorite contact
+Step 1: Retain Favorite as button to press
+Step 2: Accomplish the goal of pressing a button
+Step 3: Recall name of person to call
+Step 4: Retain name of person to call as button to press
+Step 5: Accomplish the goal of pressing a button
+Step 6: Return with goal accomplished
+\end{tcblisting}
 
-%Step 1: Select ``Favorite screen'' in \textit{Phone} app.
-%Method to accomplish goal of calling a favorite contact
-%Step 2: Select favorite contact to call in list.
-%Return with goal accomplished}
-%
-%Method to accomplish goal of calling a person by dialling:
-%
-%Step 1: Select \textit{Keypad Screen} in \textit{Phone} app.
-%
-%Step 2: Dial 
+\begin{tcblisting}{
+    listing only,
+    colback = LemonChiffon1
+}
+Method to accomplish goal of dialing number
+Step 1: Recall name of person to call
+Step 2: Retrieve-LTM next chunk of person's phone-number
+Step 3: Decide: If no more chunks, then return with goal accomplished
+Step 4: Decide: If no more digits in chunk, then goto step 2
+Step 5: Retain next digit in chunk as button to press
+Step 6: Accomplish the goal of pressing a button
+Step 7: Goto step 4
+\end{tcblisting}
 
-\item \textbf{Model the goal ``call'', which calls a person.}
+\begin{tcblisting}{
+    listing only,
+    colback = LemonChiffon1
+}
+Method to accomplish goal of pressing button
+Step 1: Recall button to press
+Step 2: Locate button on screen
+Step 3: Move finger to button area
+Step 4: Press button
+Step 5: Return with goal accomplished
+\end{tcblisting}
 
 \item \textbf{Compute execution time for the two phoning alternatives.}
 
 \textit{CP = 1.2, B=0.1, H=0.4, K=0.2, M=1.2, P=1.1 (in seconds)}
+
+It is assumed that the user remembers an 8-digit phone number as chunks of 2 digits each. For both scenarios it is also assumed that the user starts from the ``last used contacts'' screen -- which is the first screen to appear after opening the ``Phone'' application.
+
+Table~\ref{table:dial} shows that the total time it takes to call a person through dialing is estimated to be 68.6~seconds; while Table~\ref{table:favorite} shows that the total time it takes to call a favorite contact is estimated to be 15.5~seconds.
+
+\begin{table}
+\begin{tabularx}{\textwidth}{@{} Y c c @{}}
+\toprule
+Description & Type & Cost\\
+\midrule
+Step 1: Recall name of person to call & M & 0.1 + 1.2 \\
+Step 2: Retrieve-LTM whether person is a favorite contact & M & 0.1 + 1.2 \\
+Step 3: Decide: If person is a favorite contact Then accomplish the goal of calling favorite contact Else accomplish the goal of calling a person by dialing & & 0.1 + 0.1\\
+\quad Step 1: Retain Dialer as button to press & M & 0.1 + 1.2\\
+\quad Step 2: Accomplish the goal of pressing a button & & 0.1\\
+\quad\quad Step 1: Recall button to press & M & 0.1 + 1.2\\
+\quad\quad Step 2: Locate button on screen & CP & 0.1 + 1.2\\
+\quad\quad Step 3: Move finger to button area & P & 0.1 + 1.1\\
+\quad\quad Step 4: Press button & BB & $0.1 + 2 \cdot 0.1$\\
+\quad\quad Step 5: Return with goal accomplished & & 0.1\\
+\quad Step 3: Accomplish the goal of dialing number & & 0.1\\
+\quad\quad Step 1: Recall name of person to call & M & 0.1 + 1.2\\
+\quad\quad Step 2: Retrieve-LTM next chunk of person's phone-number & M & 0.1 + 1.2\\
+\quad\quad Step 3: Decide: If no more chunks, then return with goal accomplished & & 0.1\\
+\quad\quad Step 4: Decide: If no more digits in chunk, then goto step 2 & & 0.1\\
+\quad\quad Step 5: Retain next digit in chunk as button to press & M & 0.1 + 1.2\\
+\quad\quad Step 6: Accomplish the goal of pressing a button & & 4.3\\
+\quad\quad Step 7: Goto step 4 & & 0.1\\
+\quad\quad Repeat step 5-7 twice for each chunk and step 4 three times. & & 11.5\\
+\quad\quad Repeat step 4-7 four times and step 2-3 five times. & & 53\\
+\quad Step 4: Retain call button as button to press & M & 0.1 + 1.2\\
+\quad Step 5: Accomplish the goal of pressing a button & & 4.3\\
+\quad Step 6: Return with goal accomplished & & 0.1\\
+Step 4: Return with goal accomplished & & 0.1\\
+\midrule
+& Total & 68.6\\
+\bottomrule
+\end{tabularx}
+\caption{Estimation of cost in seconds of dialing favorite contact}
+\label{table:dial}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabularx}{\textwidth}{@{} Y c c @{}}
+\toprule
+Description & Type & Cost\\
+\midrule
+Step 1: Recall name of person to call & M & 0.1 + 1.2 \\
+Step 2: Retrieve-LTM whether person is a favorite contact & M & 0.1 + 1.2 \\
+Step 3: Decide: If person is a favorite contact Then accomplish the goal of calling favorite contact Else accomplish the goal of calling a person by dialing & & 0.1 + 0.1\\
+\quad Step 1: Retain Favorite as button to press & M & 0.1 + 1.2\\
+\quad Step 2: Accomplish the goal of pressing a button & & 4.3\\
+\quad Step 3: Recall name of person to call & M & 0.1 + 1.2\\
+\quad Step 4: Retain name of person to call as button to press & M & 0.1 + 1.2\\
+\quad Step 5: Accomplish the goal of pressing a button & & 4.3\\
+\quad Step 6: Return with goal accomplished & & 0.1\\
+Step 4: Return with goal accomplished & & 0.1\\
+\midrule
+& Total & 15.5\\
+\bottomrule
+\end{tabularx}
+\caption{Estimation of cost in seconds of dialing favorite contact}
+\label{table:favorite}
+\end{table}
 
 \end{enumerate}
 
