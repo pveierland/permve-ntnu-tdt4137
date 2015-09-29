@@ -1,0 +1,69 @@
+\input{../templates/assignment.tex}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{listings}
+
+\title{	
+\normalfont \normalsize 
+\textsc{Norwegian University of Science and Technology\\TDT4137 -- Cognitive Architectures}
+\horrule{0.5pt} \\[0.4cm]
+\huge Assignment 2:\\ Mental Programming in NGOMSL\\
+\horrule{2pt} \\[0.5cm]
+}
+
+\author{Per Magnus Veierland\\permve@stud.ntnu.no}
+
+\date{\normalsize\today}
+
+\newacro{NGOMSL}{Natural GOMS Language}
+\newacro{GOMS}{Goals Operators Methods Selection rules}
+
+\newacro{ID}{Index of Difficulty}
+\newacro{LTM}{Long-Term Memory}
+\newacro{MHP}{Model Human Processor}
+\newacro{VIS}{Visual Image Store}
+\newacro{VR}{Virtual Reality}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Assess in \ac{NGOMSL} how effective placing a phone call is by using the ``Favorite'' feature versus dialing a number when using \textit{Apple IOS}.}
+
+\begin{enumerate}
+\item \textbf{Give examples of typical ``unit-tasks'' for the telephone app and model the top-level in \ac{NGOMSL}. Remember to include the unit-task level.}
+
+Typical unit-tasks for the telephone app 
+\begin{tcblisting}{
+    listing only,
+    colback = LemonChiffon1
+}
+Method to accomplish goal of selecting an application tab
+Step 1: Locate icon representing target application tab
+Step 2: Accomplish task of clicking on icon
+Step 3: Return with goal completed
+\end{tcblisting}
+
+
+
+%Step 1: Select ``Favorite screen'' in \textit{Phone} app.
+%Method to accomplish goal of calling a favorite contact
+%Step 2: Select favorite contact to call in list.
+%Return with goal accomplished}
+%
+%Method to accomplish goal of calling a person by dialling:
+%
+%Step 1: Select \textit{Keypad Screen} in \textit{Phone} app.
+%
+%Step 2: Dial 
+
+\item \textbf{Model the goal ``call'', which calls a person.}
+
+\item \textbf{Compute execution time for the two phoning alternatives.}
+
+\textit{CP = 1.2, B=0.1, H=0.4, K=0.2, M=1.2, P=1.1 (in seconds)}
+
+\end{enumerate}
+
+\end{document}
+
