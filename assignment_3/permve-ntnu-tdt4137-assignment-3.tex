@@ -1,0 +1,103 @@
+\input{../templates/assignment.tex}
+
+\title{	
+\normalfont \normalsize 
+\textsc{Norwegian University of Science and Technology\\TDT4137 -- Cognitive Architectures}
+\horrule{0.5pt} \\[0.4cm]
+\huge Assignment 3:\\ Artificial Neural Networks\\
+\horrule{2pt} \\[0.5cm]
+}
+
+\author{Per Magnus Veierland\\permve@stud.ntnu.no}
+
+\date{\normalsize\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+\item The \textsc{MATLAB}-function \texttt{perceptron\_train} constructs a set of weights for a single perceptron when given a set of training inputs and outputs; as well as a threshold value~($\theta$) and a learning rate~($\alpha$). It will continue updating the weights according to the perceptron training rule until either a full epoch has been completed without any errors or until the maximum number of epochs has been reached.
+
+\item Table~\ref{table:and} and Table~\ref{table:or} shows the intermediary and final outputs when applying the \texttt{perceptron\_train} function on the truth tables of an \textsc{AND}-function and an \textsc{OR}-function.
+
+Changing the initial random weights will result in slightly different final weights.
+
+For both the \textsc{AND}-input and the \textsc{OR}-input; increasing the threshold value~($\theta$) will keep increasing both of the final weights and the training function will keep finding a solution while requiring more epochs to complete. Decreasing the threshold value to 0 or below will prevent the training function from finding a solution.
+
+\item This problem was solved using the \textsc{MATLAB} Neural Network Toolbox. The \textit{Levenberg-Marquardt} backpropagation algorithm was used to train the network.
+
+Since the \textsc{MATLAB} implementation uses both a training set, a validation set and a test set -- eight elements is a very sparse dataset. To make the implementation work better with the dataset it was simply repeated such that the number of input elements is 40 instead of 8 with redundant input data repeated 5 times.
+
+Reducing the number of hidden nodes significantly increased the time it took to train the network. However even when reducing the number of hidden nodes to 1; the resulting network was able to perform well and produce the expected outputs for the entire input range with no error greater than 0.001.
+
+The training has established the following values for the network:
+
+\begin{tabular}{ll}
+Input weight matrix & \texttt{[[-0.0274];[]]} \\
+Layer weight matrix & \texttt{[[] []; [-36.4661]]} \\
+Bias vectors        & \texttt{[[8.3433e-06];[3.0332e-04]]} \\
+\end{tabular}
+
+The network with 1 hidden node works well for numbers outside the training domain. For inputs down to -25 and up to 33 the output has an error less than 0.5. With further adjustments to the training the network can likely be made to accommodate a much greater range.
+
+\end{enumerate}
+
+\begin{table}
+\centering
+\begin{tabular}{cccccccccc}
+\toprule
+& & & Desired  & \multicolumn{2}{c}{Initial} & Actual & & \multicolumn{2}{c}{Final} \\
+& \multicolumn{2}{c}{Inputs} & output & \multicolumn{2}{c}{weights} & output & Error & \multicolumn{2}{c}{weights} \\
+Epoch & $x_1$ & $x_2$ & $Y_d$ & $w_1$ & $w_2$ & $Y$ & $e$ & $w_1$ & $w_2$ \\
+\midrule
+1 & 0 & 0 & 0 & 0.191 & 0.428 & 0 & 0 & 0.191 & 0.428 \\
+  & 0 & 1 & 0 & 0.191 & 0.428 & 1 & -1 & 0.191 & 0.328 \\
+  & 1 & 0 & 0 & 0.191 & 0.328 & 0 & 0 & 0.191 & 0.328 \\
+  & 1 & 1 & 1 & 0.191 & 0.328 & 1 & 0 & 0.191 & 0.328 \\
+2 & 0 & 0 & 0 & 0.191 & 0.328 & 0 & 0 & 0.191 & 0.328 \\
+  & 0 & 1 & 0 & 0.191 & 0.328 & 1 & -1 & 0.191 & 0.228 \\
+  & 1 & 0 & 0 & 0.191 & 0.228 & 0 & 0 & 0.191 & 0.228 \\
+  & 1 & 1 & 1 & 0.191 & 0.228 & 1 & 0 & 0.191 & 0.228 \\
+3 & 0 & 0 & 0 & 0.191 & 0.228 & 0 & 0 & 0.191 & 0.228 \\
+  & 0 & 1 & 0 & 0.191 & 0.228 & 1 & -1 & 0.191 & 0.128 \\
+  & 1 & 0 & 0 & 0.191 & 0.128 & 0 & 0 & 0.191 & 0.128 \\
+  & 1 & 1 & 1 & 0.191 & 0.128 & 1 & 0 & 0.191 & 0.128 \\
+4 & 0 & 0 & 0 & 0.191 & 0.128 & 0 & 0 & 0.191 & 0.128 \\
+  & 0 & 1 & 0 & 0.191 & 0.128 & 0 & 0 & 0.191 & 0.128 \\
+  & 1 & 0 & 0 & 0.191 & 0.128 & 0 & 0 & 0.191 & 0.128 \\
+  & 1 & 1 & 1 & 0.191 & 0.128 & 1 & 0 & 0.191 & 0.128 \\
+\bottomrule
+\end{tabular}
+\caption{Perceptron learning results for \textsc{AND}-input.}
+\label{table:and}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{cccccccccc}
+\toprule
+& & & Desired  & \multicolumn{2}{c}{Initial} & Actual & & \multicolumn{2}{c}{Final} \\
+& \multicolumn{2}{c}{Inputs} & output & \multicolumn{2}{c}{weights} & output & Error & \multicolumn{2}{c}{weights} \\
+Epoch & $x_1$ & $x_2$ & $Y_d$ & $w_1$ & $w_2$ & $Y$ & $e$ & $w_1$ & $w_2$ \\
+\midrule
+1 & 0 & 0 & 0 & 0.060 & 0.682 & 0 & 0 & 0.060 & 0.682 \\
+  & 0 & 1 & 1 & 0.060 & 0.682 & 1 & 0 & 0.060 & 0.682 \\
+  & 1 & 0 & 1 & 0.060 & 0.682 & 0 & 1 & 0.160 & 0.682 \\
+  & 1 & 1 & 1 & 0.160 & 0.682 & 1 & 0 & 0.160 & 0.682 \\
+2 & 0 & 0 & 0 & 0.160 & 0.682 & 0 & 0 & 0.160 & 0.682 \\
+  & 0 & 1 & 1 & 0.160 & 0.682 & 1 & 0 & 0.160 & 0.682 \\
+  & 1 & 0 & 1 & 0.160 & 0.682 & 0 & 1 & 0.260 & 0.682 \\
+  & 1 & 1 & 1 & 0.260 & 0.682 & 1 & 0 & 0.260 & 0.682 \\
+3 & 0 & 0 & 0 & 0.260 & 0.682 & 0 & 0 & 0.260 & 0.682 \\
+  & 0 & 1 & 1 & 0.260 & 0.682 & 1 & 0 & 0.260 & 0.682 \\
+  & 1 & 0 & 1 & 0.260 & 0.682 & 1 & 0 & 0.260 & 0.682 \\
+  & 1 & 1 & 1 & 0.260 & 0.682 & 1 & 0 & 0.260 & 0.682 \\
+\bottomrule
+\end{tabular}
+\caption{Perceptron learning results for \textsc{OR}-input.}
+\label{table:or}
+\end{table}
+
+\end{document}
+
