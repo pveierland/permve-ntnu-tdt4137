@@ -1,7 +1,10 @@
 \input{../templates/assignment.tex}
 
-\title{	
-\normalfont \normalsize 
+\usepackage{mathtools}
+\usepackage{relsize}
+
+\title{
+\normalfont \normalsize
 \textsc{Norwegian University of Science and Technology\\TDT4137 -- Cognitive Architectures}
 \horrule{0.5pt} \\[0.4cm]
 \huge Assignment 4:\\ Fuzzy Reasoning\\
@@ -12,26 +15,104 @@
 
 \date{\normalsize\today}
 
+\newacro{COG}{Centre of Gravity}
+
 \begin{document}
 
 \maketitle
 
-\begin{enumerate}
+\section*{Fuzzy sets and rules}
+
+\begin{enumerate}[label=\alph*)]
 \item
 
-Distance:
+The distance between the robot car and the car in front is 3.6. This value intersects with the linguistic sets \textsc{Small} and \textsc{Perfect}:
 
-$\mu_{Small} = \frac{4.5 - 3.6}{4.5 - 3.0} = 0.6$
+\begin{displaymath}
+\mu_{\textsc{Small}} = \frac{4.5 - 3.6}{4.5 - 3.0} = 0.6
+\end{displaymath}
 
-$\mu_{Perfect} = \frac{3.6 - 3.5}{5.0 - 3.5} = 0.07$
+\begin{displaymath}
+\mu_{\textsc{Perfect}} = \frac{3.6 - 3.5}{5.0 - 3.5} \approx 0.07
+\end{displaymath}
 
-Delta:
+The gradient of the distance is the delta variable which has the value 1.1 and belongs to the linguistic sets \textsc{Stable} and \textsc{Growing}:
 
-$\mu_{
+\begin{displaymath}
+\mu_{\textsc{Stable}} = \frac{1.5 - 1.1}{1.5 - 0} \approx 0.27
+\end{displaymath}
 
-distance = 3.6
-delta = 1.1
+\begin{displaymath}
+\mu_{\textsc{Growing}} = \frac{1.1 - 0.5}{2 - 0.5} = 0.4
+\end{displaymath}
 
+\begin{enumerate}[label=\textsc{Rule \arabic*}:]
+\item \textbf{If} \textsc{Distance} \textbf{is} \textsc{Small} \textbf{and} \textsc{Delta} \textbf{is} \textsc{Growing} \textbf{then} \textsc{Action} \textbf{is} \textsc{None}
+
+\begin{displaymath}
+\mu_{\textsc{None}} = \min(\mu_{\textsc{Small}}, \mu_{\textsc{Growing}}) = \min(0.6, 0.4) = 0.4
+\end{displaymath}
+
+\item \textbf{If} \textsc{Distance} \textbf{is} \textsc{Small} \textbf{and} \textsc{Delta} \textbf{is} \textsc{Stable} \textbf{then} \textsc{Action} \textbf{is} \textsc{SlowDown}
+
+\begin{displaymath}
+\mu_{\textsc{SlowDown}} = \min(\mu_{\textsc{Small}}, \mu_{\textsc{Stable}}) = \min(0.6, 0.27) = 0.2
+\end{displaymath}
+
+\item \textbf{If} \textsc{Distance} \textbf{is} \textsc{Perfect} \textbf{and} \textsc{Delta} \textbf{is} \textsc{Growing} \textbf{then} \textsc{Action} \textbf{is} \textsc{SpeedUp}
+
+\begin{displaymath}
+\mu_{\textsc{SpeedUp}} = \min(\mu_{\textsc{Perfect}}, \mu_{\textsc{Growing}}) = \min(0.07, 0.4) = 0.07
+\end{displaymath}
+
+\item \textbf{If} \textsc{Distance} \textbf{is} \textsc{VeryBig} \textbf{and} \big(\textsc{Delta} \textbf{is not} \textsc{Growing} \textbf{or} \textsc{Delta} \textbf{is not} \textsc{GrowingFast}\big) \textbf{then} \textsc{Action} \textbf{is} \textsc{FloorIt}
+
+\begin{align*}
+\mu_{\textsc{FloorIt}} &= \min\big(\mu_{\textsc{VeryBig}}, \max(\neg\mu_{\textsc{Growing}}, \neg\mu_{\textsc{GrowingFast}})\big)\\
+&= \min\big(0, \max(1 - 0.4, 1 - 0)\big)\\
+&= \min\big(0, \max(0.6, 1)\big)\\
+&= \min(0, 1)\\
+&= 0
+\end{align*}
+
+\item \textbf{If} \textsc{Distance} \textbf{is} \textsc{VerySmall} \textbf{then} \textsc{Action} \textbf{is} \textsc{BrakeHard}
+
+\begin{displaymath}
+\mu_{\textsc{BrakeHard}} = \mu_{\textsc{VerySmall}} = 0
+\end{displaymath}
+
+The resulting defuzzified output can be calculated as the \ac{COG} of the aggregated fuzzy set $A$. Rule outputs are clipped before they are aggregated.
+
+%Raw data:
+%-10 = 0
+%-9  = 0
+%-8  = 0
+%-7  = 0
+%-6  = 0.2
+%-5  = 0.2
+%-4  = 0.2
+%-3  = 0.2
+%-2  = 0.3
+%-1  = 0.4
+%0   = 0.4
+%1   = 0.4
+%2   = 0.3
+%3   = 0.07
+%4   = 0.07
+%5   = 0.07
+%6   = 0.07
+%7   = 0
+%8   = 0
+%9   = 0
+%10  = 0
+
+\begin{align*}
+\text{COG} &= \frac{\mathlarger{\int_{-10}^{10} x \cdot \mu_A(x)~dx}}{\mathlarger{\int_{-10}^{10} \mu_A(x)~dx}}\\[0.2cm]
+&\approx \frac{\sum\limits_{n=-10}^{-7}(n) \cdot 0 + \sum\limits_{n=-6}^{-3}(n) \cdot 0.2 + (-2) \cdot 0.3 + \sum\limits_{n=-1}^{1}(n) \cdot 0.4 + (2) \cdot 0.3 + \sum\limits_{n=3}^{6}(n) \cdot 0.07 + \sum\limits_{n=7}^{10}(n) \cdot 0}{4 \cdot 0 + 4 \cdot 0.2 + 0.3 + 3 \cdot 0.4 + 0.3 + 4 \cdot 0.07 + 4 \cdot 0}\\[0.2cm]
+&= \frac{0 + -3.6 + -0.6 + 0 + 0.6 + 1.26 + 0}{2.88} = \frac{-2.34}{2.88} = -0.8125
+\end{align*}
+
+\end{enumerate}
 \end{enumerate}
 
 \end{document}
