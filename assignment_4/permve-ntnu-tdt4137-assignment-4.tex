@@ -3,6 +3,47 @@
 \usepackage{mathtools}
 \usepackage{relsize}
 
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{10} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{10}  % for normal
+
+% Custom colors
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{lbcolor}{rgb}{0.99,0.99,0.99}
+
+\usepackage{listings}
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+language=Python,
+basicstyle=\ttm,
+numbers=left,
+otherkeywords={self},
+keywordstyle=\ttb\color{deepblue},
+stringstyle=\color{deepgreen},
+backgroundcolor=\color{lbcolor},
+frame=single,
+showstringspaces=false
+}}
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+
+% Python for external files
+\newcommand\pythonexternal[2][]{{
+\pythonstyle
+\lstinputlisting[#1]{#2}}}
+
+% Python for inline
+\newcommand\pythoninline[1]{{\pythonstyle\lstinline!#1!}}
+
 \title{
 \normalfont \normalsize
 \textsc{Norwegian University of Science and Technology\\TDT4137 -- Cognitive Architectures}
@@ -56,7 +97,7 @@ The gradient of the distance is the delta variable which has the value 1.1 and b
 \item \textbf{If} \textsc{Distance} \textbf{is} \textsc{Small} \textbf{and} \textsc{Delta} \textbf{is} \textsc{Stable} \textbf{then} \textsc{Action} \textbf{is} \textsc{SlowDown}
 
 \begin{displaymath}
-\mu_{\textsc{SlowDown}} = \min(\mu_{\textsc{Small}}, \mu_{\textsc{Stable}}) = \min(0.6, 0.27) = 0.2
+\mu_{\textsc{SlowDown}} = \min(\mu_{\textsc{Small}}, \mu_{\textsc{Stable}}) = \min(0.6, 0.27) = 0.27
 \end{displaymath}
 
 \item \textbf{If} \textsc{Distance} \textbf{is} \textsc{Perfect} \textbf{and} \textsc{Delta} \textbf{is} \textsc{Growing} \textbf{then} \textsc{Action} \textbf{is} \textsc{SpeedUp}
@@ -80,6 +121,8 @@ The gradient of the distance is the delta variable which has the value 1.1 and b
 \begin{displaymath}
 \mu_{\textsc{BrakeHard}} = \mu_{\textsc{VerySmall}} = 0
 \end{displaymath}
+
+\end{enumerate}
 
 The resulting defuzzified output can be calculated as the \ac{COG} of the aggregated fuzzy set $A$. Rule outputs are clipped before they are aggregated.
 
@@ -112,7 +155,13 @@ The resulting defuzzified output can be calculated as the \ac{COG} of the aggreg
 &= \frac{0 + -3.6 + -0.6 + 0 + 0.6 + 1.26 + 0}{2.88} = \frac{-2.34}{2.88} = -0.8125
 \end{align*}
 
-\end{enumerate}
+\item
+Performing \textit{Mamdani} reasoning with \ac{COG} defuzzification using segmentation steps yielded an output of -1.1066.
+
+\newpage
+
+\pythonexternal{fuzzy.py}
+
 \end{enumerate}
 
 \end{document}
