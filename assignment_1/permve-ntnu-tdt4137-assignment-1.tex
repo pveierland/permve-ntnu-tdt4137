@@ -1,7 +1,7 @@
-\input{../templates/assignment.tex}
+\input{permve-ntnu-latex-assignment.tex}
 
-\title{	
-\normalfont \normalsize 
+\title{
+\normalfont \normalsize
 \textsc{Norwegian University of Science and Technology\\TDT4137 -- Cognitive Architectures}
 \horrule{0.5pt} \\[0.4cm]
 \huge Assignment 1:\\ MHP / Fitt's Law\\
@@ -15,6 +15,7 @@
 \newacro{ID}{Index of Difficulty}
 \newacro{LTM}{Long-Term Memory}
 \newacro{MHP}{Model Human Processor}
+\newacro{MT}{Movement Time}
 \newacro{VIS}{Visual Image Store}
 \newacro{VR}{Virtual Reality}
 
@@ -26,48 +27,76 @@
 
 \item \textbf{A brake pedal shall be pushed down as soon as the red braking light from the car in front lights up. Calculate using \ac{MHP} what the response time will be until the braking pedal is pushed down.}
 
-This scenario describes a situation which requires a simple reaction from the person controlling the car. There is no need to look up the percept against something stored in long-term memory; only respond with a simple reaction when the braking lights on the car in front is lit.
+The problem described can be analyzed as a simple reaction scenario using the \ac{MHP}. It is assumed that the person controlling the car is focused on the traffic ahead of him at the time when the braking light in front is activated. At time zero, the braking light on the car in front is activated, denoted as the physical signal $\alpha$. The driver's \textit{Perceptual Processor} will register the activated braking light and construct a physically coded representation, $\alpha'$, in the \ac{VIS}. Shortly after being constructed in the \ac{VIS}, a visually coded representation, $\alpha''$, will appear in the \textit{Working Memory}. The total time spent up until this point is one \textit{Perceptual Processor} cycle, denoted by $\tau_p$.
 
-The starting assumption is that the person driving is already focused on the traffic in front of him. When the braking light on the car in front is lit, denoted as the signal $\alpha$, the perception will be processed by the Perceptual Processor which will construct a physically coded representation of the symbol, $\alpha '$, in the \ac{VIS}. Very shortly after being constructed in the \ac{VIS}, the visually coded symbol $\alpha''$ will appear in the working memory. The total time spent up until this point is one Perceptual Processor cycle, denoted by $\tau_p$.
+As part of the \textit{Recognize-Act} cycle, the \textit{Cognitive Processor} will initiate an action in \textit{Long-Term Memory} which is associated with the visual brake light symbol ($\alpha''$) and produce the motor response \textsc{PUSH-BRAKE} which is placed in the \textit{Working Memory}. This operation takes a single \textit{Cognitive Processor} cycle, denoted by $\tau_C$.
 
-When the visually coded symbol $\alpha''$ appears in the working memory, the Cognitive Processor receives the symbol and prepares a response. This takes one Cognitive Processor cycle, $\tau_C$.
+After the \textsc{PUSH-BRAKE} motor command is placed in \textit{Working Memory}, the \textit{Motor Processor} will act on the available input and execute the \textsc{PUSH-BRAKE} action. This takes a single \textit{Motor Processor} cycle, denoted by $\tau_M$.
 
-The response prepared by the Cognitive Processor consists of a motor command which is again placed in working memory. The Motor Processor receives this command and prepares to act on it. It then takes one Motor Processor cycle time, $\tau_M$, before the braking pedal is being pushed down.
+\clearpage
 
-The total response time from the red brake light of the car in front lights up until the driver is able to step on the brake pedal is:
-
-$\textit{ResponseTime} = \tau_p + \tau_C + \tau_M$
-
-The response time is given directly as a result of the cycle times of the three processors in \ac{MHP}. Given the scenario it might be wise to use pessimistic, i.e. ``Slowman'', values. This pessimistic sum can then be used to estimate the necessary minimum distance between cars at a given speed.
-
-$\textit{ResponseTime} = 200~\textit{msec} + 170~\textit{msec} + 100~\textit{msec} = 470~\textit{msec}$
-
-\item \textbf{Assume that a user views an image of a flag on a screen. How long will it take until she recognizes that it is Scandinavic? (Assume that the flag's semantic name must be retrieved from \ac{LTM}.)}
-
-It is here assumed that \textit{DanishFlag} has an abstract code stored in the user's long-term memory and that \textit{Scandinavic} is a known object class.
-
-Following the cognitive processing rates set by Cavanaugh (1972) a flag is likely a more complicated symbol than a number, but is still composed of basic geometric shapes and clear colors. The time it takes to recognize a flag is therefore likely longer than a plain geometric shape (50~msec), but shorter than a random form (68~msec). In the following calculation the recognition is assumed to take one Cognitive Processor cycle.
+The total response time from the red brake light of the car in front lights up until the driver is able to step on the brake pedal is (Table~\ref{tab:a}):
+\begin{align*}
+\textit{ResponseTime}
+&= \tau_p + \tau_C + \tau_M \\
+&= 100~[50 \sim 200]~\text{msec} + 70~[25 \sim 170]~\text{msec} + 70~[30 \sim 100]~\text{msec} \\
+&= 240~[105 \sim 470]~\text{msec}
+\end{align*}
 
 \end{enumerate}
 
-{\footnotesize
-\begin{tabular}{clllll}
-Step & Description & Display & VIS & WM & Elapsed Time \\
-\hline
-1. & Danish flag appears on screen & $\alpha$ & & & 0 \\
-2. & Flag image transmitted to VIS and WM & $\alpha$ & $\alpha'$ & $\alpha''$ & $\tau_p$ \\
-3. & Recognition of visual symbol & $\alpha$ & $\alpha'$ & $\alpha'':\textit{DanishFlag}$ & $\tau_p + \tau_C$ \\
-4. & Classification of abstract representation & $\alpha$ & $\alpha'$ & $\alpha'':\textit{DanishFlag}:\textit{Scandinavic}$ & $\tau_p + 2 \cdot \tau_C$ \\
+\begin{table}
+{\footnotesize\centering
+\begin{tabular}{cllllll}
+\toprule
+Step & Description                    & Environment & VIS       & WM                              & Body                & Elapsed Time               \\
+\midrule
+1.   & Brake light appears            & $\alpha$    &           &                                 &                     & 0                          \\
+2.   & Transmitted to \ac{VIS} and WM & $\alpha$    & $\alpha'$ & $\alpha''$                      &                     & $\tau_p$                   \\
+3.   & Initiate brake motor response  & $\alpha$    & $\alpha'$ & $\alpha''$. \textsc{PUSH-BRAKE} &                     & $\tau_p + \tau_C$          \\
+4.   & Process brake motor command    & $\alpha$    & $\alpha'$ & $\alpha''$. \textsc{PUSH-BRAKE} & \textsc{PUSH-BRAKE} & $\tau_p + \tau_C + \tau_M$ \\
+\bottomrule
 \end{tabular}
 }
+\caption{Simple reaction response}
+\label{tab:a}
+\end{table}
 
-\begin{enumerate}[label=\alph*)]
-\setcounter{enumi}{2}
+\begin{enumerate}[resume*]
+\item \textbf{Assume that a user views an image of a flag on a screen. How long will it take until she recognizes that it is Scandinavian? (Assume that the flag's semantic name must be retrieved from \ac{LTM}.)}
 
-\item[] It is shown that the time it will take for a user to observe a Danish flag symbol on screen and to classify it as Scandinavic will take (using ``Middleman'' values):
+It is here assumed that \textsc{DanishFlag} has an abstract code stored in the user's long-term memory and that \textsc{Scandinavian} is a known object class.
 
-$\textit{TotalClassificationTime} = \tau_p + 2 \cdot \tau_C = 100~\textit{msec} + 2 \cdot 70~\textit{msec} = 240~\textit{msec}$
+Following the cognitive processing rates set by Cavanaugh (1972) a flag is likely a more complicated symbol than a number, but is still composed of basic geometric shapes and clear colors. The time it takes to recognize a flag is therefore likely longer than a plain geometric shape (50~msec), but shorter than a random form (68~msec). In the following calculation the recognition and classification are both assumed to consume one \textit{Cognitive Processor} cycle each.
 
+The total time it takes a user to recognize a flag as Scandinavian is (Table~\ref{tab:b}):
+\begin{align*}
+\textit{ClassificationTime}
+&= \tau_p + 2 \cdot \tau_C \\
+&= 100~[50 \sim 200]~\text{msec} + 2 \cdot 70~[25 \sim 170]~\text{msec} \\
+&= 240~[100 \sim 540]~\text{msec}
+\end{align*}
+
+\end{enumerate}
+
+\begin{table}
+{\footnotesize\centering
+\begin{tabular}{cllllll}
+\toprule
+Step & Description                    & Environment & VIS       & WM                                                       & Elapsed Time              \\
+\midrule
+1.   & Danish flag appears            & $\alpha$    &           &                                                          & 0                         \\
+2.   & Transmitted to \ac{VIS} and WM & $\alpha$    & $\alpha'$ & $\alpha''$                                               & $\tau_p$                  \\
+3.   & Recognize Danish flag          & $\alpha$    & $\alpha'$ & $\alpha''$ : \textsc{DanishFlag}                         & $\tau_p + \tau_C$         \\
+4.   & Classify as Scandinavian       & $\alpha$    & $\alpha'$ & $\alpha''$ : \textsc{DanishFlag} : \textsc{Scandinavian} & $\tau_p + 2 \cdot \tau_C$ \\
+\bottomrule
+\end{tabular}
+}
+\caption{Flag classification}
+\label{tab:b}
+\end{table}
+
+\begin{enumerate}[resume*]
 \item \textbf{What is meant by \acf{ID}? Use Fitt's law to show that it is faster to move the cursor to a target which is on the edge of the screen compared to a target which is positioned closed to the edge of the screen}
 
 \acf{ID} is a metric used to quantify the difficulty of making a controlled movement a certain distance $D$ to a target of width $W$. ``Fitt's Law'' is named after Paul Fitts who proposed in his 1954 paper that this difficulty was proportional to twice the distance moved and inversely proportional to the width of the target, formulated as:
@@ -82,7 +111,7 @@ The most commonly used formulation today is the Shannon formulation proposed by 
 \text{ID} = \log_2\big(\frac{D}{W} + 1\big)
 \end{displaymath}
 
-The \ac{ID} is commonly used in a linear regression model:
+The \ac{ID} is commonly used in a linear regression model to calculate the \ac{MT}:
 
 \begin{displaymath}
 \text{MT} = a + b \cdot \text{ID}
@@ -90,7 +119,7 @@ The \ac{ID} is commonly used in a linear regression model:
 
 From the question description we are using the model values $a = 50$ and $b = 150$.
 
-Using Windows, there is a 5~mm tall menu ($W = 5~mm$) which is placed a short distance away from the edge of the screen. The average distance of movement to reach this menu is $D = 80~mm$. The average moving time to reach the menu from a point on the screen is:
+Using Windows, there is a 5~mm tall menu ($W = 5$~mm) which is placed a short distance away from the edge of the screen. The average distance of movement to reach this menu is $D = 80$~mm. The average moving time to reach the menu from a point on the screen is:
 
 \begin{displaymath}
 \text{MT}_\text{Windows} = a + b \cdot \log_2\Big(\frac{D}{W} + 1\Big) = 50~{\footnotesize \frac{\text{ms}}{\text{bit}}} + 150~{\footnotesize \frac{\text{ms}}{\text{bit}}} \cdot \log_2\Big(\frac{80~\text{\footnotesize mm}}{5~\text{\footnotesize mm}} + 1\Big) \approx 663~\text{\footnotesize ms}
@@ -102,21 +131,22 @@ Using Macintosh, the menu is also 5~mm tall. However this menu is placed on the 
 \text{MT}_\text{Macintosh} = a + b \cdot \log_2\Big(\frac{D}{W} + 1\Big) = 50~{\footnotesize \frac{\text{ms}}{\text{bit}}} + 150~{\footnotesize \frac{\text{ms}}{\text{bit}}} \cdot \log_2\Big(\frac{80~\text{\footnotesize mm}}{50~\text{\footnotesize mm}} + 1\Big) \approx 257~\text{\footnotesize ms}
 \end{displaymath}
 
-From this evaluation it can be seen that a menu placed along the border of a screen can be reached in less than half the time compared to a menu placed a short distance away from the border.
+The evaluation shows that a menu placed along the border of a screen can be reached in less than half the time compared to a menu placed a short distance away from the border.
 
-\item \textbf{How many images per second must be shown to create an illution of continuity in time?}
+\clearpage
 
-In the \ac{MHP} model, perceptual events which occur within a single Perceptual Processor cycle will be combined to a single percept. This phenomena is found with both visual and acoustic percepts and requires that the percepts are closely related.
+\item \textbf{How many images per second must be shown to create an illusion of continuity in time?}
 
-To create an illusion of continuity for images they must be shown at a rate greater than the reciprocal of the Perceptual Processor cycle time; i.e. greater than $1 / \tau_p$. For the illusion to work for all humans we use ``Fastman'' values in the calculation.
+Within the \ac{MHP} framework, perceptual events which occur within a single \textit{Perceptual Processor} cycle will be combined to a single percept. This phenomena is found with both visual and acoustic percepts and requires that the percepts are closely related.
 
+To create an illusion of continuity for images each pair of frames must appear within a single \textit{Perceptual Processor} cycle, denoted by $\tau_p$. Based on this, we can calculate the minimum image rate required:
 \begin{displaymath}
-\textit{ImageRate} > \frac{1}{\tau_p} = \frac{1}{50~\frac{\text{\footnotesize msec}}{\text{\footnotesize image}}} = 20~\frac{\text{\footnotesize images}}{\text{\footnotesize second}}
+\textit{ImageRate} > \Bigg[ \frac{1}{\tau_p} = \frac{1}{100~[50 \sim 200]~\text{msec}} = 10~[20 \sim 5]~\text{Hz} \Bigg]
 \end{displaymath}
 
-This result will be affected by the ``Variable Perceptual Processor Rate Principle'' (P1) which states that the Perceptual Processor cycle time, $\tau_p$, varies inversely with stimulus intensity. This means that for intense stimulus, e.g. immersive gaming using \ac{VR} glasses, the image rate will need to be higher to guarantee the illusion of continuity.
+For the illusion to work for all users, the image rate must exceed 20~Hz.
 
+This result will be affected by the \textit{Variable Perceptual Processor Rate Principle} (P1) which states that the \textit{Perceptual Processor} cycle time, $\tau_p$, varies inversely with stimulus intensity. This means that for intense stimulus, e.g. immersive gaming using \ac{VR} glasses, the image rate will need to be higher to guarantee the illusion of continuity.
 \end{enumerate}
 
 \end{document}
-
