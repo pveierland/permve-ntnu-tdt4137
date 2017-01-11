@@ -1,0 +1,30 @@
+
+## If failure, undo last operator
+
+sp {wcg*select*operator*prefer*inverse*failure
+   (state <s> ^failure <f>
+              ^last-operator <ol>
+              ^operator <o> +)
+   (<ol> ^bank.<other-bank> <obank> ^cargo <cargo>)
+   (<cargo> ^{ << empty goat wolf cabbage >> <type> } <n> )
+   (<o> ^name move-boat
+        ^bank <obank>
+        ^cargo.<type> <n>)
+-->
+   (<s> ^operator <o> >)
+}
+
+## If not failure, avoid last operator
+
+sp {wcg*select*operator*avoid*inverse*not*failure
+   (state <s> -^failure
+               ^last-operator <ol>
+               ^operator <o> +)
+   (<ol> ^bank.<other-bank> <obank> ^cargo <cargo>)
+   (<cargo> ^{ << empty goat wolf cabbage >> <type> } <n> )
+   (<o> ^name move-boat
+        ^bank <obank>
+        ^cargo.<type> <n>)
+-->
+   (<s> ^operator <o> <)
+}

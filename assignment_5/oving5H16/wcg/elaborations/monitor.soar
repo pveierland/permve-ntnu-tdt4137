@@ -1,0 +1,55 @@
+
+###
+### move-BOAT MONITOR OPERATOR AND STATE
+###
+
+sp {monitor*move-boat
+   (state <s> ^operator <o>)
+   (<o> ^name move-boat
+        ^cargo <cargo>)
+   (<cargo>  ^{ << wolf goat cabbage empty >>  <type> } <number>)
+   -->
+   (write (crlf) | Move | <number> | | <type>)}
+
+sp {monitor*state*left
+   (state <s> ^name wcg
+              ^left-bank <l>
+              ^right-bank <r>)
+   (<l> ^goat <ml>
+        ^wolf <cl>
+        ^cabbage <ccl>
+        ^boat 1)
+   (<r> ^goat <mr>
+        ^wolf <cr>
+        ^cabbage <ccr>
+        ^boat 0)
+   -->
+   (write (crlf) | G: | <ml> |, W: | <cl> |, C: | <ccl> |  B ~~~   |
+   | G: | <mr> |, W: | <cr> |, C: | <ccr> |  |)}
+
+sp {monitor*state*right
+   (state <s> ^name wcg
+              ^left-bank <l>
+              ^right-bank <r>)
+   (<l> ^goat <ml>
+        ^wolf <cl>
+        ^cabbage <ccl>
+        ^boat 0)
+   (<r> ^goat <mr>
+        ^wolf <cr>
+        ^cabbage <ccr>
+        ^boat 1)
+-->
+   (write (crlf) | G: | <ml> |, W: | <cl> |, C: | <ccl> |   ~~~ B |
+   | G: | <mr> |, W: | <cr> |, C: | <ccr> |  |)} 
+
+sp {monitor*proposed*ops
+   (state <s> ^name wcg
+              ^operator <o> +)
+   (<o> ^name <name>
+         ^bank <b>
+         ^cargo <cargo>)
+   (<cargo> ^<type> <n> )
+-->
+   (write (crlf) | proposed op | <o> |  | <type> |  | )
+   (write | <n> |)}

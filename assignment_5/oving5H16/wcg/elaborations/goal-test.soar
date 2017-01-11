@@ -1,0 +1,50 @@
+
+###
+### STATE SUCCESS/GOAL DETECTION
+###
+
+sp {wcg*detect*state*success
+   (state <s> ^name wcg ^right-bank <rb> ^desired.right-bank <drb>)
+   (<rb>  ^boat <b> ^wolf <w> ^goat <g> ^cabbage <c>)
+   (<drb> ^boat <b> ^wolf <w> ^goat <g> ^cabbage <c>)
+-->
+   (write (crlf) |Wolf-Cabbage-Goat world is solved!|)
+   (halt)
+}
+
+###
+### STATE FAILURE DETECTION
+###
+
+sp {wcg*evaluate*state*failure*more*wolf*goat
+   (state <s> ^desired <d>
+              ^<< right-bank left-bank >> <bank>)
+   (<bank> ^goat 1 
+           ^boat 0
+           ^wolf 1
+           ^cabbage 0)
+-->
+   (write (crlf) |Failure State.|)
+   (<s> ^failure <d>)}
+
+sp {wcg*evaluate*state*failure*more*goat*cabbage
+   (state <s> ^desired <d>
+              ^<< right-bank left-bank >> <bank>)
+   (<bank> ^goat 1 
+           ^boat 0
+           ^wolf 0
+           ^cabbage 1)
+-->
+   (write (crlf) |Failure State.|)
+   (<s> ^failure <d>)}
+
+sp {wcg*evaluate*state*failure*more*wolf*goat*cabbage
+   (state <s> ^desired <d>
+              ^<< right-bank left-bank >> <bank>)
+   (<bank> ^goat 1 
+           ^boat 0
+           ^wolf 1
+           ^cabbage 1)
+-->
+   (write (crlf) |Failure State.|)
+   (<s> ^failure <d>)}

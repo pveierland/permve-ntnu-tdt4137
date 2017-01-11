@@ -1,0 +1,3 @@
+pushd wcg
+source wcg_source.soar
+popd

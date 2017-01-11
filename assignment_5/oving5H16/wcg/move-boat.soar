@@ -1,0 +1,99 @@
+
+sp {wcg*propose*operator*move-boat-cargo
+   (state <s> ^name wcg
+              ^<< right-bank left-bank >> <bank>)
+   (<bank> ^{ << wolf goat cabbage >> <type> } > 0 
+           ^boat 1)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name move-boat
+        ^bank <bank>
+        ^cargo.<type> 1)
+}
+
+sp {wcg*propose*operator*move-boat-empty
+   (state <s> ^name wcg
+              ^<< right-bank left-bank >> <bank>)
+   (<bank> ^boat 1)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name move-boat
+        ^bank <bank>
+        ^cargo.empty 1)
+}
+
+
+###
+### move-boat OPERATOR IMPLEMENTATION
+###
+
+sp {apply*move-boat-cargo
+   (state <s> ^operator <o>)
+   (<o> ^name move-boat
+        ^cargo <cargo>
+        ^bank <bank>)
+   (<cargo> ^{ << goat wolf cabbage >> <type> } <num>)
+   (<bank> ^<type> <bank-num>
+           ^other-bank <obank>)
+   (<obank> ^<type> <obank-num>)
+-->
+   (<bank> ^boat 0 1 -)
+   (<obank> ^boat 1 0 -)
+   (<bank> ^<type> (- <bank-num> <num>) <bank-num> -)
+   (<obank> ^<type> (+ <obank-num> <num>) <obank-num> -)
+}
+
+sp {apply*move-boat-alone
+   (state <s> ^operator <o>)
+   (<o> ^name move-boat
+        ^bank <bank>
+        ^cargo.empty 1)
+   (<bank> ^other-bank <obank>)
+-->
+   (<bank> ^boat 0 1 -)
+   (<obank> ^boat 1 0 -)
+}
+
+
+###
+### RECORD LAST OPERATOR FOR SEARCH CONTROL
+###
+
+
+sp {wcg*apply*move-boat*record*last-operator*cargo
+   (state <s> ^name wcg
+              ^operator <o>)
+   (<o> ^name move-boat
+        ^bank <bank>
+        ^cargo <cargo>)
+   (<cargo> ^{ << goat wolf cabbage >> <type> } <n> )
+   -->
+   (write (crlf) | record:| <type> |  |)
+   (<s> ^last-operator <o1>)
+   (<o1> ^bank <bank>
+         ^cargo <ocargo>)
+   (<ocargo>  ^<type> <n>)}
+
+sp {wcg*apply*move-boat*record*last-operator*alone
+   (state <s> ^name wcg
+              ^operator <o>)
+   (<o> ^name move-boat
+        ^bank <bank>
+        ^cargo <cargo>)
+   (<cargo> ^empty 1)
+   -->
+   (write (crlf) | record:| alone |  |)
+   (<s> ^last-operator <o1>)
+   (<o1> ^bank <bank>
+         ^cargo <ocargo>)
+   (<ocargo> ^empty 1)}
+
+sp {wcg*apply*move-boat*remove*old*last-operator
+   (state <s> ^name wcg
+              ^operator <o>
+              ^<lr-bank>.other-bank <o-bank>
+              ^last-operator <lo>)
+   (<lo> ^bank <o-bank>)
+   -->
+   (<s> ^last-operator <lo> -)}
+

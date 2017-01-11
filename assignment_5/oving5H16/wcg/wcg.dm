@@ -1,0 +1,95 @@
+42
+SOAR_ID 0
+ENUMERATION 1 1 state
+ENUMERATION 2 1 nil
+ENUMERATION 3 2 mac wcg
+SOAR_ID 4
+ENUMERATION 5 1 initialize-mac
+SOAR_ID 6
+ENUMERATION 7 1 move-boat
+SOAR_ID 8
+INTEGER_RANGE 9 0 3
+INTEGER_RANGE 10 0 1
+SOAR_ID 11
+INTEGER_RANGE 12 1 2
+INTEGER_RANGE 13 -2147483648 2147483647
+INTEGER_RANGE 14 0 3
+INTEGER_RANGE 15 0 3
+ENUMERATION 16 2 cannibals missionaries
+INTEGER_RANGE 17 -2147483648 2147483647
+SOAR_ID 18
+SOAR_ID 19
+INTEGER_RANGE 20 -2147483648 2147483647
+SOAR_ID 21
+INTEGER_RANGE 22 -2147483648 2147483647
+INTEGER_RANGE 23 -2147483648 2147483647
+SOAR_ID 24
+SOAR_ID 25
+SOAR_ID 26
+SOAR_ID 27
+SOAR_ID 28
+SOAR_ID 29
+SOAR_ID 30
+SOAR_ID 31
+SOAR_ID 32
+SOAR_ID 33
+SOAR_ID 34
+SOAR_ID 35
+SOAR_ID 36
+SOAR_ID 37
+SOAR_ID 38
+ENUMERATION 39 1 initialize-world
+INTEGER_RANGE 40 -2147483648 2147483647
+INTEGER_RANGE 41 -2147483648 2147483647
+51
+0 desired 11
+0 failure 11
+0 last-operator 6
+0 left-bank 8
+0 name 3
+0 operator 4
+0 operator 6
+0 operator 38
+0 right-bank 8
+0 superstate 2
+0 top-state 0
+0 type 1
+4 cabbage 18
+4 cargo 29
+4 goat 24
+4 name 5
+4 wolf 26
+6 bank 8
+6 boat 13
+6 cabbage 19
+6 cannibals 14
+6 cargo 28
+6 goat 25
+6 missionaries 9
+6 name 7
+6 number 15
+6 type 16
+6 types 12
+6 wolf 27
+8 abbage 21
+8 boat 10
+8 cabbage 17
+8 cabbagge 20
+8 cannibals 9
+8 goat 22
+8 missionaries 9
+8 other-bank 8
+8 wolf 23
+11 left-bank 8
+11 right-bank 8
+28 cabbage 35
+28 empty 37
+28 empty 41
+28 goat 33
+28 wolf 31
+29 cabbage 34
+29 empty 36
+29 empty 40
+29 goat 32
+29 wolf 30
+38 name 39

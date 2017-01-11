@@ -1,0 +1,18 @@
+sp {wcg*propose*initialize
+   (state <s> ^superstate nil
+             -^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-world)
+}
+
+sp {wcg*apply*initialize
+   (state <s> ^operator.name initialize-world)
+-->
+   (<s> ^name wcg ^desired <ds> ^right-bank <rb> ^left-bank <lb>)
+   (<ds> ^right-bank <drb>)
+   (<drb> ^boat 1 ^wolf 1 ^goat 1 ^cabbage 1)
+   (<lb>  ^boat 1 ^wolf 1 ^goat 1 ^cabbage 1 ^other-bank <rb>)
+   (<rb>  ^boat 0 ^wolf 0 ^goat 0 ^cabbage 0 ^other-bank <lb>)
+   (write (crlf) |Wolf-Cabbage-Goat world has been initialized!|)
+}
